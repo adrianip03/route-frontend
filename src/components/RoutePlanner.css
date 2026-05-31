@@ -1,0 +1,10 @@
+.routePlannerContainer {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+}
+
+.addressPane {
+  position: absolute;
+  z-index: 10;
+}
