@@ -6,7 +6,7 @@
 }
 
 .addressPaneContainer {
-  width: 300;
+  width: 100vw;
   box-shadow:
     rgba(22, 31, 39, 0.42) 0px 60px 123px -25px,
     rgba(19, 26, 32, 0.08) 0px 35px 75px -35px;

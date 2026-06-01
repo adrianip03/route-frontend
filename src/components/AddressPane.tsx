@@ -118,19 +118,18 @@ function AddressPane({
 
         <label className="locInputLabel" htmlFor="destLoc">
           Drop-off Location
-          <br />
-          <input
-            className="locInput"
-            name="destLoc"
-            id="destLoc"
-            type="text"
-            value={destLoc}
-            onChange={(e) => {
-              setDestLoc(e.target.value);
-            }}
-            placeholder="Drop-off Location"
-          />
         </label>
+        <input
+          className="locInput"
+          name="destLoc"
+          id="destLoc"
+          type="text"
+          value={destLoc}
+          onChange={(e) => {
+            setDestLoc(e.target.value);
+          }}
+          placeholder="Drop-off Location"
+        />
 
         <div>
           <button className="resetButton" type="reset">
