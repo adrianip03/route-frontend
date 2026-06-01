@@ -1,20 +1,20 @@
 import { useState } from "react";
 import React from "react";
 import "./AddressPane.css";
-import { getRouteToken } from "../utils/routeApi";
+import { getRouteToken } from "../services/routeApi";
 import type { routeInfo } from "./RoutePlanner";
 
 interface AddressPaneProps {
-  currRouteInfo: null | routeInfo;
+  routeInfo: null | routeInfo;
   onTokenReceived: (token: string) => void;
   loading: boolean;
   setLoading: (loading: boolean) => void;
-  error: boolean;
+  error: null | string;
   setError: (error: null | string) => void;
 }
 
 function AddressPane({
-  currRouteInfo,
+  routeInfo,
   onTokenReceived,
   loading,
   setLoading,
@@ -110,10 +110,10 @@ function AddressPane({
           {error && <div className="error">Error: {error}</div>}
         </div>
       ) : (
-        currRouteInfo && (
+        routeInfo && (
           <div className="card">
-            {<div className="info">Total distance: {currRouteInfo.dist}</div>}
-            {<div className="info">Total time: {currRouteInfo.time}</div>}
+            {<div className="info">Total distance: {routeInfo.dist}</div>}
+            {<div className="info">Total time: {routeInfo.time}</div>}
           </div>
         )
       )}

@@ -6,7 +6,7 @@ import {
 } from "@vis.gl/react-google-maps";
 import { useEffect, useState } from "react";
 import "./MapView.css";
-import { getRoute } from "../utils/routeApi";
+import { getRoute } from "../services/routeApi";
 import type { routeInfo } from "./RoutePlanner";
 
 const MAX_RETRY = 5;

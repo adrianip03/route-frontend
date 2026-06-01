@@ -20,7 +20,7 @@ function RoutePlanner() {
     <div className="routePlannerContainer">
       <div className="addressPane">
         <AddressPane
-          currRouteInfo={routeInfo}
+          routeInfo={routeInfo}
           onTokenReceived={(newToken: string) => {
             navigate(`/route/${newToken}`, { replace: true });
           }}

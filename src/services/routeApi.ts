@@ -49,8 +49,8 @@ const api = axios.create({
 
 export function getRouteToken(params: GetRouteTokenParams): Promise<string> {
   return api
-    .post<GetRouteTokenResponse>("/mock/route/success", {
-      // .post<GetRouteTokenResponse>("/route", {
+    // .post<GetRouteTokenResponse>("/mock/route/success", {
+      .post<GetRouteTokenResponse>("/route", {
       origin: params.sourceLoc,
       destination: params.destLoc,
     })
@@ -71,8 +71,8 @@ export function getRouteToken(params: GetRouteTokenParams): Promise<string> {
 export function getRoute(params: GetRouteParams): Promise<GetRouteResponse> {
   return (
     api
-      // .get<GetRouteResponse>(`/route/${params.token}`)
-      .get<GetRouteResponse>(`mock/route/success`)
+      .get<GetRouteResponse>(`/route/${params.token}`)
+      // .get<GetRouteResponse>(`mock/route/success`)
       .then((response) => {
         // console.log(response);
         const data = response.data;
