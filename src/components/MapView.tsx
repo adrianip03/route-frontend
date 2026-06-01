@@ -9,8 +9,18 @@ import "./MapView.css";
 import { getRoute } from "../services/routeApi";
 import type { routeInfo } from "./RoutePlanner";
 
-const MAX_RETRY = 5;
+/** Maximum number of attempts when route calculation is still in progress */
+const MAX_TRY = 5;
 
+/**
+ * Props for the MapView component
+ *
+ * @interface MapViewProps
+ * @property {undefined | string} token - Authentication token for fetching route data
+ * @property {Function} onRouteInfoReceived - Callback fired when route information is successfully retrieved
+ * @property {Function} setLoading - Setter function for loading state in parent component
+ * @property {Function} setError - Setter function for error state in parent component
+ */
 interface MapViewProps {
   token: undefined | string;
   onRouteInfoReceived: (routeInfo: null | routeInfo) => void;
@@ -18,11 +28,47 @@ interface MapViewProps {
   setError: (error: null | string) => void;
 }
 
+/**
+ * Geographic coordinates for map markers and paths
+ *
+ * @interface Coordinates
+ * @property {number} lat - Latitude coordinate
+ * @property {number} lng - Longitude coordinate
+ */
 interface Coordinates {
   lat: number;
   lng: number;
 }
 
+/**
+ * MapView Component - Displays route on Google Maps with retry logic
+ *
+ * This component handles:
+ * - Rendering an interactive Google Map
+ * - Fetching route data using an authentication token
+ * - Automatic retry mechanism for "in progress" route calculations
+ * - Displaying start/end markers and route polyline
+ * - Loading and error state management
+ *
+ * @component
+ * @param {MapViewProps} props - Component properties
+ * @returns {JSX.Element} Rendered map with route visualization
+ *
+ * @example
+ * ```tsx
+ * <MapView
+ *   token="9d3503e0-7236-4e47-a62f-8b01b5646c16"
+ *   onRouteInfoReceived={(routeInfo) => console.log('Route:', routeInfo)}
+ *   setLoading={(isLoading) => setIsLoading(isLoading)}
+ *   setError={(error) => setErrorMessage(error)}
+ * />
+ * ```
+ *
+ * @remarks
+ * - Requires VITE_GOOGLE_MAPS_API_KEY environment variable
+ * - Implements retry pattern with MAX_TRY limit
+ * - Google Maps API loads asynchronously and only renders when ready
+ */
 function MapView({
   token,
   onRouteInfoReceived,
@@ -48,7 +94,18 @@ function MapView({
     }
   }, [token]);
 
-  // Try get route subroutine, returns a boolean whether retry is needed.
+  /**
+   * Attempts to fetch route data using current token
+   *
+   * @async
+   * @returns {Promise<boolean>} True if retry is needed (status "in progress"), false otherwise
+   *
+   * @remarks
+   * - Parses coordinate strings to numbers for map rendering
+   * - Updates path and route info on success
+   * - Handles three API response statuses: success, failure, in progress
+   * - Propagates errors to parent component via setError callback
+   */
   async function tryGetRoute(): Promise<boolean> {
     if (!token) return false;
     try {
@@ -85,7 +142,7 @@ function MapView({
   }
 
   async function retryLoop() {
-    for (let i = 0; i < MAX_RETRY; i++) {
+    for (let i = 0; i < MAX_TRY; i++) {
       const needRetry = await tryGetRoute();
       // console.log(needRetry);
       if (!needRetry) break;

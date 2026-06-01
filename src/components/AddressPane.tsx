@@ -4,6 +4,17 @@ import "./AddressPane.css";
 import { getRouteToken } from "../services/routeApi";
 import type { routeInfo } from "./RoutePlanner";
 
+/**
+ * Props for the AddressPane component
+ *
+ * @interface AddressPaneProps
+ * @property {null | routeInfo} routeInfo - Route distance and time information when available
+ * @property {Function} onTokenReceived - Callback fired when route token is successfully obtained
+ * @property {boolean} loading - Indicates if an API request is currently in progress
+ * @property {Function} setLoading - State setter for loading state in parent component
+ * @property {null | string} error - Current error message, null when no error exists
+ * @property {Function} setError - State setter for error state in parent component
+ */
 interface AddressPaneProps {
   routeInfo: null | routeInfo;
   onTokenReceived: (token: string) => void;
@@ -13,6 +24,25 @@ interface AddressPaneProps {
   setError: (error: null | string) => void;
 }
 
+/**
+ * AddressPane component for collecting and submitting location addresses
+ *
+ * @component
+ * @param {AddressPaneProps} props - Component props
+ * @returns {JSX.Element} Rendered address form with route information
+ *
+ * @example
+ * ```tsx
+ * <AddressPane
+ *   routeInfo={routeInfo}
+ *   onTokenReceived={handleToken}
+ *   loading={isLoading}
+ *   setLoading={setIsLoading}
+ *   error={error}
+ *   setError={setError}
+ * />
+ * ```
+ */
 function AddressPane({
   routeInfo,
   onTokenReceived,
@@ -24,6 +54,15 @@ function AddressPane({
   const [sourceLoc, setSourceLoc] = useState<string>("");
   const [destLoc, setDestLoc] = useState<string>("");
 
+  /**
+   * Handles form submission to get route token
+   *
+   * @async
+   * @param {React.SubmitEvent<HTMLFormElement>} e - Form submit event
+   * @returns {Promise<void>}
+   *
+   * @throws {Error} When API call fails
+   */
   async function handleFormSubmit(e: React.SubmitEvent<HTMLFormElement>) {
     e.preventDefault();
 
